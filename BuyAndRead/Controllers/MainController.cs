@@ -23,7 +23,7 @@ namespace BuyAndRead.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        
         public IActionResult GetAvailableBooks()
         {
             return Ok();

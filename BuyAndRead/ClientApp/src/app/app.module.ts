@@ -8,15 +8,9 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import {LoginComponent} from "./login/login.component";
 import {MainpageComponent} from "./mainpage/mainpage.component";
-import {JwtModule} from '@auth0/angular-jwt';
 import {WildcardComponent} from "./wildcard/wildcard.component";
-import {environment} from "../environments/environment";
-import {ACCESS_TOKEN_KEY} from "./services/login.service";
 
-export function tokenGetter()
-{
-  return localStorage.getItem(ACCESS_TOKEN_KEY);
-}
+
 
 @NgModule({
   declarations: [
@@ -39,12 +33,7 @@ export function tokenGetter()
             /*{path: 'fetch-data', component: FetchDataComponent}, */
         ]),
         ReactiveFormsModule,
-        JwtModule.forRoot({
-          config: {
-            tokenGetter,
-            allowedDomains: environment.tokenWhiteListedDomains
-          }
-        })
+
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -20,10 +20,10 @@ namespace BuyAndRead.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private readonly IOptions<LoginOptions> loginOptions;
+       /* private readonly IOptions<LoginOptions> loginOptions;
         public LoginController(IOptions<LoginOptions> loginOptions)
         {
-        }
+        }*/
         
         private readonly BuyAndReadDbContext _dbContext;
         public LoginController(BuyAndReadDbContext dbContext)
@@ -44,9 +44,9 @@ namespace BuyAndRead.Controllers
             var newCode = PromocodeGenerator.CodeGen();
             return newCode;
         }
-
+        //Их тоже под списание
         //[Route("login")]
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Login([FromBody]User request)
         {
             
@@ -68,7 +68,7 @@ namespace BuyAndRead.Controllers
         {
             return BuyAndReadDbContext.Users.SingleOrDefault(u => u.Promocode == Promocode);
         }
-
+        
         private string GenerateJWT(User user)
         {
             var loginParams = loginOptions.Value;
