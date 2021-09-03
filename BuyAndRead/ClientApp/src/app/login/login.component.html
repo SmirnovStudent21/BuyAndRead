@@ -1,0 +1,25 @@
+﻿<style>
+  .form.group1
+  {margin: 20%}
+
+  form {
+    text-align: center;
+  }
+</style>
+
+
+<form  (ngSubmit)="loginReq()" name="Login" action="" method="post">
+  <div class="form.group">
+    <label><strong>Введите промокод:</strong></label>
+    <p><input [(ngModel)]="codeField" id="pcode" placeholder="Промокод" maxlength="40"></p>
+    <button type = "submit" class="btn btn-primary" id="b1" (click)="getInput()">Войти!</button>
+  </div>
+  <div id="str"></div>
+  <br>
+  <br>
+  <div class="form.group1">
+    <p>Ещё нет промокода?</p>
+    <button type = "submit" class="btn btn-other" id="b2" (click)="codeGenReq()">Получить промокод!</button>
+  </div>
+</form>
+
