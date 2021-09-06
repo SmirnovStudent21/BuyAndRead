@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Autofac;
 using BuyAndRead.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -30,7 +31,15 @@ namespace BuyAndRead
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {   
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+            
             services.AddAuthentication(opt =>
                 {
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,7 +59,7 @@ namespace BuyAndRead
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
                     };
                 });
-            services.AddCors();
+            
             services.AddControllers();
             
             
@@ -61,6 +70,9 @@ namespace BuyAndRead
            
             services.AddDbContext<BuyAndReadDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("BuyAndReadDbContext")));
+           /* services.AddIdentity<User, IdentityRole<long>>()
+                .AddEntityFrameworkStores<BuyAndReadDbContext,long>()
+                .AddDefaultTokenProviders(); */
         }
         
         
@@ -101,7 +113,7 @@ namespace BuyAndRead
             }
 
             app.UseRouting();
-            app.UseCors();
+            app.UseCors("EnableCORS");
             
             
             app.UseEndpoints(endpoints =>

@@ -9,7 +9,12 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import {LoginComponent} from "./login/login.component";
 import {MainpageComponent} from "./mainpage/mainpage.component";
 import {WildcardComponent} from "./wildcard/wildcard.component";
+import {JwtModule} from '@auth0/angular-jwt';
+import {AuthGuard} from "./services/auth-guard";
 
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 
 @NgModule({
@@ -27,15 +32,21 @@ import {WildcardComponent} from "./wildcard/wildcard.component";
         FormsModule,
         RouterModule.forRoot([
             {path: 'login', component: LoginComponent},
-            {path: 'main', component: MainpageComponent},
+            {path: 'main', component: MainpageComponent, canActivate: [AuthGuard] },
             {path: '', redirectTo: '/login', pathMatch: 'full'},
             {path: '**', component: WildcardComponent}
             /*{path: 'fetch-data', component: FetchDataComponent}, */
-        ]),
-        ReactiveFormsModule,
-
+          ]),
+      ReactiveFormsModule,
+          JwtModule.forRoot({
+            config: {
+              tokenGetter: tokenGetter,
+              allowedDomains: ["localhost:5001"],
+              disallowedRoutes: []
+            }
+          })
     ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

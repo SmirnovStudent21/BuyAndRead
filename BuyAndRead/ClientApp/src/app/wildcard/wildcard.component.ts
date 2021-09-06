@@ -2,7 +2,7 @@
 
 @Component({
   selector: 'wildcard-component',
-  template: '<label>Error 404</label>'
+  template: '<label>Такой страницы не существует</label>'
 })
 export class WildcardComponent {
 

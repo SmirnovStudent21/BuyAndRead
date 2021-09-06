@@ -11,30 +11,31 @@ namespace BuyAndRead.Models
         }
 
        
-
+        
         public DbSet<Book> Books { get; set; }
-        public static DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         
         public DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=user;Username=postgres;Password=password");
+            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=user;Username=postgres;" +
+                                     "Password=11111");
             base.OnConfiguring(optionsBuilder);
             
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
-                .WithMany(u => u.Orders);
-
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1, Promocode = "b77d409a-10cd-4a47-8e94-b0cd0ab50aa1"
                 });
+            
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders);
 
             modelBuilder.Entity<BookOrder>()
                 .HasKey(o => new {o.BookId, o.OrderId});

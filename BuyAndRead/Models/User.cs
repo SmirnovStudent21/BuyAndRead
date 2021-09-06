@@ -12,7 +12,6 @@ namespace BuyAndRead.Models
         [Required]
         public int Id { get; set; }
         public string Promocode { get; set; }
-        
         public List<Order> Orders { get; set; }
     }
 }

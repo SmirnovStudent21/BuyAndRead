@@ -8,18 +8,22 @@
 </style>
 
 
-<form  (ngSubmit)="loginReq()" name="Login" action="" method="post">
-  <div class="form.group">
-    <label><strong>Введите промокод:</strong></label>
-    <p><input [(ngModel)]="codeField" id="pcode" placeholder="Промокод" maxlength="40"></p>
-    <button type = "submit" class="btn btn-primary" id="b1" (click)="getInput()">Войти!</button>
-  </div>
-  <div id="str"></div>
-  <br>
-  <br>
-  <div class="form.group1">
-    <p>Ещё нет промокода?</p>
-    <button type = "submit" class="btn btn-other" id="b2" (click)="codeGenReq()">Получить промокод!</button>
+<form  class = "form-signin" #loginform="ngForm" (ngSubmit)="login(loginform)">
+  <div class="container-fluid">
+    <h2 class="form-signing-heading">Ввод промокода</h2>
+    <div *ngIf="invalidLogin" class="alert alert-danger">Некорректный промокод!</div>
+    <br>
+    <label for="Promocode" class="sr-only">Promocode</label>
+    <input type="text" id="Promocode" name="Promocode" ngModel class="form-control" placeholder="Введите промокод..."
+    required autofocus>
+    <br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
   </div>
 </form>
-
+<!--
+form class="form-register" #loginForm (ngSubmit)="codeGen(loginform)">
+<div class="container-fluid">
+  <span>Ещё нет промокода?</span>
+  <a class="btn btn-lg btn-primary" type="submit">Получить промокод!</a>
+</div>
+-->
