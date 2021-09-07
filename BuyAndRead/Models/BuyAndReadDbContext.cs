@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BuyAndRead.Models
 {
@@ -7,6 +10,7 @@ namespace BuyAndRead.Models
         
         public BuyAndReadDbContext(DbContextOptions<BuyAndReadDbContext> options) : base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -19,10 +23,15 @@ namespace BuyAndRead.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=user;Username=postgres;" +
+            /*optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=user;Username=postgres;" +
                                      "Password=11111");
-            base.OnConfiguring(optionsBuilder);
-            
+            base.OnConfiguring(optionsBuilder); */
+            if (optionsBuilder.IsConfigured)
+                return;
+            var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).
+                AddJsonFile("./appsettings.json").Build();
+            var connectString = config.GetConnectionString("BuyAndReadDbContext");
+            optionsBuilder.UseNpgsql(connectString).EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,7 +39,7 @@ namespace BuyAndRead.Models
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = 1, Promocode = "b77d409a-10cd-4a47-8e94-b0cd0ab50aa1"
+                    Id = 1, Promocode = new Guid("b77d409a-10cd-4a47-8e94-b0cd0ab50aa1") 
                 });
             
             modelBuilder.Entity<Order>()
@@ -47,7 +56,7 @@ namespace BuyAndRead.Models
                 .HasOne(bo => bo.Order)
                 .WithMany(o => o.BookOrders)
                 .HasForeignKey(bo => bo.OrderId);
-
         }
+        
     }
 }
